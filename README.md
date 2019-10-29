@@ -10,4 +10,4 @@ Use this command to run the backend part "mvn spring-boot:run"
 and this command for running frontend part(Angular) "npm start"
 
 # Running
-use username "karima" and password "password" for login
+use username "karima" and password "password" for login. also need to add token from github
