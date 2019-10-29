@@ -1,0 +1,14 @@
+<header>
+  <nav class="navbar navbar-expand-md navbar-dark" style="background-color: cornflowerblue;">
+    <div>
+      <img loading="lazy" src="https://webbfontaine.com/wp-content/themes/webbfontaine/assets/images/logo_blue.svg" alt="" class="img-responsive lazyloaded"
+           data-lazy-src="https://webbfontaine.com/wp-content/themes/webbfontaine/assets/images/logo_blue.svg" data-was-processed="true">
+      <label class="ui-card-subtitle ui-grid-pad">WebbFontaine Task</label>
+    </div>
+    <ul class="navbar-nav navbar-collapse justify-content-end">
+      <li>
+        <a *ngIf="isLoggedIn" class="nav-link" href="/logout" (click)=handleLogout()>Logout</a>
+      </li>
+    </ul>
+  </nav>
+</header>

@@ -1,0 +1,109 @@
+<app-menu></app-menu>
+<div class="ui-g ui-fluid">
+  <div class="ui-g-12">
+    <div class="card card-w-title">
+      <form [formGroup]="searchForm" (ngSubmit)="searchRepository()">
+        <div class="container">
+          <h1>{{this.welcomeMessage}}</h1>
+          <div class="ui-g form-group">
+            <div class="ui-g-12 ui-md-4">
+              <label class="ui-card-subtitle ui-grid-pad">Repository :*</label>
+              <div class="ui-g-12" style="padding-left: 1px;">
+                <span class="md-inputfield">
+                  <p-autoComplete id="autocomplete" [suggestions]="filteredRepositories" (completeMethod)="filterRepository($event)" field="name"
+                                  [minLength]="1" formControlName="repository">
+                  </p-autoComplete>
+                </span>
+              </div>
+              <p-message severity="error"
+                         text="Invalid repository"
+                         *ngIf="!searchForm.controls['repository'].valid&&searchForm.controls['repository'].touched">
+              </p-message>
+            </div>
+          </div>
+          <div class="ui-g form-group">
+            <div class="ui-g-12 ui-md-6">
+              <p-button type="submit" [disabled]="!searchForm.get('repository').valid" label="Search" (click)="showProgressBar=true;"></p-button>
+            </div>
+          </div>
+        </div>
+      </form>
+      <div class="card card-w-title">
+        <div class="ui-g dashboard" *ngIf="showTable;">
+          <div class="ui-g-12 ui-md-3">
+            <p-fieldset legend="repository" [style]="{'background-color': 'white','color': 'chocolate'}">
+              <div class="ui-g form-group">
+                <div class="ui-g-12 ui-md-6">
+                  <label class="ui-card-subtitle ui-grid-pad"> Name </label>
+                </div>
+                <div class="ui-g-12 ui-md-2">
+                  <label class="ui-card-subtitle ui-grid-pad"> Full Name </label>
+                </div>
+              </div>
+              <div class="ui-g form-group" *ngFor="let item of searchResult?.items;">
+                <div class="ui-g-12 ui-md-6">
+                  <label class="ui-card-subtitle ui-grid-pad"> {{ item?.name }} </label>
+                </div>
+
+                <div class="ui-g-12 ui-md-2">
+                  <label class="cs-label"> {{item?.full_name}} </label>
+                </div>
+              </div>
+            </p-fieldset>
+          </div>
+
+          <div class="ui-g-12 ui-md-9">
+            <p-fieldset legend="commiters" [style]="{'background-color': 'white','color': 'chocolate'}">
+              <div class="ui-g form-group">
+                <div class="ui-g-12 ui-md-2">
+                  <label class="ui-card-subtitle ui-grid-pad"> Name </label>
+                </div>
+                <div class="ui-g-12 ui-md-2">
+                  <label class="ui-card-subtitle ui-grid-pad"> Email </label>
+                </div>
+                <div class="ui-g-12 ui-md-2">
+                  <label class="ui-card-subtitle ui-grid-pad"> Changes </label>
+                </div>
+                <div class="ui-g-12 ui-md-2">
+                  <label class="ui-card-subtitle ui-grid-pad"> Deletions </label>
+                </div>
+                <div class="ui-g-12 ui-md-2">
+                  <label class="ui-card-subtitle ui-grid-pad"> Additions </label>
+                </div>
+              </div>
+              <div class="ui-g form-group" *ngFor="let commitResult of commitResults;">
+
+                <div class="ui-g-12 ui-md-2">
+                  <label class="ui-card-subtitle ui-grid-pad"> {{ commitResult.commit.committer?.name }} </label>
+                </div>
+
+                <div class="ui-g-12 ui-md-2" *ngIf="commitResult.commit.committer?.email!=null">
+                  <label class="ui-card-subtitle ui-grid-pad"> {{ commitResult.commit.committer?.email }} </label>
+                </div>
+
+                <div class="ui-g-12 ui-md-2">
+                  <label class="ui-card-subtitle ui-grid-pad"> {{ commitResult?.stats?.total }}</label>
+                </div>
+
+                <div class="ui-g-12 ui-md-2">
+                  <label class="ui-card-subtitle ui-grid-pad"> {{ commitResult?.stats?.deletions }}</label>
+                </div>
+
+                <div class="ui-g-12 ui-md-2">
+                  <label class="ui-card-subtitle ui-grid-pad"> {{ commitResult?.stats?.additions }}</label>
+                </div>
+              </div>
+            </p-fieldset>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<p-dialog header="Processing" [(visible)]="showProgressBar" modal="modal" showEffect="fade"
+          [closable]="false" [closeOnEscape]="false"
+          minHeight="100"
+          minWidth="300">
+  <p-progressBar [value]="progressBarValue"></p-progressBar>
+</p-dialog>
